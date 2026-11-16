@@ -218,6 +218,28 @@ html[lang="hi"] .ev .when,html[lang="te"] .ev .when,html[lang="hi"] .tpill,html[
 .music:not(.on) .bars{display:none}.music.on .off{display:none}
 .music[hidden]{display:none}
 
+/* ---------- make "tap the seal" unmistakable ---------- */
+.seal-cta{position:absolute;left:50%;top:calc(var(--flap) - 4px);width:clamp(76px,10vw,112px);aspect-ratio:1;transform:translate(-50%,-50%);z-index:4;pointer-events:none}
+.seal-cta .ring{position:absolute;inset:0;border-radius:50%;border:2px solid #F3D88E;box-shadow:0 0 18px rgba(243,216,142,.7);animation:ripple2 2.2s ease-out infinite}
+.seal-cta .r2{animation-delay:1.1s}
+@keyframes ripple2{0%{transform:scale(.95);opacity:.95}100%{transform:scale(2.1);opacity:0}}
+.gate-hint{position:absolute;left:50%;top:calc(var(--flap) + clamp(52px,7vw,76px));transform:translateX(-50%);z-index:6;margin:0!important;white-space:nowrap;
+  padding:10px 20px 9px 16px;border-radius:999px;background:#FCF1DA;color:#7A1E2B!important;font-size:.8rem!important;font-weight:600;letter-spacing:.2em;
+  box-shadow:0 0 0 1px #E3C47E,0 0 0 4px rgba(243,216,142,.35),0 10px 24px -8px rgba(40,0,6,.6);animation:nudge 1.6s ease-in-out infinite!important;opacity:1!important;
+  display:inline-flex;align-items:center;gap:8px;pointer-events:none}
+.gate-hint::before{content:"";width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:8px solid #7A1E2B;animation:up 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-5px)}}
+@keyframes up{0%,100%{transform:translateY(1px)}50%{transform:translateY(-3px)}}
+html[lang="hi"] .gate-hint,html[lang="te"] .gate-hint{font-size:1rem!important;letter-spacing:.02em}
+.seal-btn .wax{animation:sealpulse 1.4s ease-in-out infinite}
+.gate.open .seal-cta,.gate.open .gate-hint{opacity:0!important;animation:none!important;transition:opacity .25s}
+.fe-center{padding-top:clamp(96px,13vh,130px)!important}
+@media (max-width:700px) and (orientation:portrait){.fe-center{padding-top:clamp(90px,11vh,110px)!important}.gate-hint{top:calc(var(--flap) + 56px)}}
+.ev .meta .dir{justify-self:center;display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:6px 14px;border-radius:999px;border:1px solid var(--gold);
+  color:var(--ink);text-decoration:none;font-family:var(--f-display);font-size:var(--t-small);letter-spacing:.12em;text-transform:uppercase;min-height:36px}
+.ev .meta .dir:hover{background:var(--ink);color:var(--card)}
+html[lang="hi"] .ev .meta .dir,html[lang="te"] .ev .meta .dir{letter-spacing:0;text-transform:none}
+
 @media (prefers-reduced-motion:reduce){.gate,.fe-body,.fe-flap,.wax-l,.wax-r{transition:none}.bflies{display:none}}
 
 /* butterflies released when the seal breaks */
@@ -828,7 +850,6 @@ html[lang="hi"] .hero .hero-date,html[lang="te"] .hero .hero-date{letter-spacing
       </svg>
       <div class="fe-names"><span class="nm" data-i="bride">Shubha</span><span class="amp">&amp;</span><span class="nm" data-i="groom">Kanishka</span></div>
       <p class="fe-date" data-i="heroDate">Saturday · 12 December 2026</p>
-      <p class="gate-hint" data-i="open">Tap the seal to open</p>
     </div>
   </div>
   <div class="fe-flap">
@@ -839,6 +860,8 @@ html[lang="hi"] .hero .hero-date,html[lang="te"] .hero .hero-date{letter-spacing
     </svg>
     <p class="gate-shloka" data-i="shloka">॥ श्री गणेशाय नमः ॥</p>
   </div>
+  <div class="seal-cta" aria-hidden="true"><span class="ring"></span><span class="ring r2"></span></div>
+  <p class="gate-hint" data-i="open">Tap the seal to open</p>
   <div class="seal-btn"><svg class="wax" viewBox="-52 -52 104 104" aria-hidden="true">
         <defs>
           <radialGradient id="g-gwax" cx="36%" cy="30%" r="78%"><stop offset="0" stop-color="#FBE7A6"/><stop offset=".35" stop-color="#E0B85A"/><stop offset=".75" stop-color="#B38632"/><stop offset="1" stop-color="#7E5A18"/></radialGradient>
@@ -1037,7 +1060,8 @@ html[lang="hi"] .hero .hero-date,html[lang="te"] .hero .hero-date{letter-spacing
           <p class="tpill"><span data-i="timeLbl">Time</span> · <em data-i="mehendiTime">Morning</em></p></div>
           <p class="blurb" data-i="mehendiBlurb">Henna, music and long conversations. Come early, sit back and let the artists work their magic.</p>
           <div class="meta">
-            <span><span data-i="venueLbl">Venue</span> · <em data-i="venueShort">Verde Retreat, Chilkur</em></span>
+            <span><span data-i="venueLbl">Venue</span> · <em data-i="mehendiVenue">At home · Sumanth Sai Capital Towers</em></span>
+            <a class="dir" href="https://share.google/xVnGEDYwTpCEfFpkx" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i="dirBtn">Directions</span></a>
             <span><span data-i="dress">Dress code</span> · <em data-i="mehendiDress">Shades of green</em></span>
           </div>
         </div>
@@ -1332,6 +1356,7 @@ html[lang="hi"] .hero .hero-date,html[lang="te"] .hero .hero-date{letter-spacing
 (function(){
 const T = {
   en:{
+    mehendiVenue:"At home · Sumanth Sai Capital Towers", dirBtn:"Directions",
     timeLbl:"Time", muhurtLbl:"Muhurtham", mehendiTime:"Morning", haldiTime:"10:00 AM", sangeetTime:"7:30 PM onwards", wedTime:"7:25 PM",
     mehendi:"Mehendi", mehendiDate:"Thursday · 10 December 2026", mehendiBlurb:"Henna, music and long conversations. Come early, sit back and let the artists work their magic.", mehendiDress:"Shades of green",
     venueLbl:"Venue", venueShort:"Verde Retreat, Chilkur", timeSoon:"Time · to be announced",
@@ -1357,6 +1382,7 @@ const T = {
     footLine:"Your presence is the only gift we ask for.", footSign:"With love,", footNames:"Shubha & Kanishka"
   },
   hi:{
+    mehendiVenue:"घर पर · सुमंत साई कैपिटल टावर्स", dirBtn:"रास्ता देखें",
     timeLbl:"समय", muhurtLbl:"मुहूर्त", mehendiTime:"सुबह", haldiTime:"सुबह 10:00 बजे", sangeetTime:"शाम 7:30 बजे से", wedTime:"शाम 7:25",
     mehendi:"मेहंदी", mehendiDate:"गुरुवार · 10 दिसंबर 2026", mehendiBlurb:"मेहंदी, संगीत और लंबी बातें। जल्दी आइए, आराम से बैठिए और कलाकारों का जादू देखिए।", mehendiDress:"हरे रंग",
     venueLbl:"स्थान", venueShort:"वर्दे रिट्रीट, चिलकुर", timeSoon:"समय · जल्द ही",
@@ -1382,6 +1408,7 @@ const T = {
     footLine:"आपकी उपस्थिति ही हमारा उपहार है।", footSign:"सप्रेम,", footNames:"शुभा & कनिष्क"
   },
   te:{
+    mehendiVenue:"ఇంట్లో · సుమంత్ సాయి క్యాపిటల్ టవర్స్", dirBtn:"దారి చూడండి",
     timeLbl:"సమయం", muhurtLbl:"ముహూర్తం", mehendiTime:"ఉదయం", haldiTime:"ఉదయం 10:00 గంటలకు", sangeetTime:"సాయంత్రం 7:30 నుండి", wedTime:"సాయంత్రం 7:25",
     mehendi:"మెహందీ", mehendiDate:"గురువారం · 10 డిసెంబర్ 2026", mehendiBlurb:"గోరింటాకు, సంగీతం, బోలెడు ముచ్చట్లు. ముందుగా రండి, హాయిగా కూర్చుని కళాకారుల మాయను చూడండి.", mehendiDress:"ఆకుపచ్చ ఛాయలు",
     venueLbl:"వేదిక", venueShort:"వెర్డే రిట్రీట్, చిల్కూరు", timeSoon:"సమయం · త్వరలో",
