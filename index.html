@@ -147,7 +147,7 @@ html[lang="te"] .gate-shloka{font-family:"Tiro Telugu",serif}
 /* ---------- smooth scrolling on phones ---------- */
 .hero{contain:paint}
 .scene .paint{transform:translateZ(0);backface-visibility:hidden}
-#petals{height:100lvh}
+
 @media (hover:none),(pointer:coarse){
   .scene .paint{inset:0;will-change:auto}
   .lang,.hero .hero-date{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
@@ -1451,7 +1451,7 @@ function releaseButterflies(){
 /* ---- background music: starts with the seal tap (phones only allow sound after a tap) ---- */
 const bgm=document.getElementById('bgm'), mBtn=document.getElementById('musicBtn');
 let musicOn=false;
-function fadeTo(v,ms){const a=bgm.volume,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/ms);bgm.volume=a+(v-a)*k;if(k<1)requestAnimationFrame(f);else if(v===0)bgm.pause();})(t0);}
+function fadeTo(v,ms){const a=bgm.volume,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/ms);bgm.volume=Math.min(1,Math.max(0,a+(v-a)*k));if(k<1)requestAnimationFrame(f);else if(v===0)bgm.pause();})(t0);}
 function playMusic(){bgm.volume=0;const pr=bgm.play();if(pr&&pr.then)pr.then(()=>{fadeTo(.6,1800);setMusic(true);}).catch(()=>setMusic(false));else{fadeTo(.6,1800);setMusic(true);}}
 function setMusic(on){musicOn=on;mBtn.hidden=false;mBtn.classList.toggle('on',on);mBtn.setAttribute('aria-pressed',on);mBtn.setAttribute('aria-label',on?'Pause music':'Play music');}
 mBtn.addEventListener('click',()=>{if(musicOn){fadeTo(0,500);setMusic(false);}else playMusic();});
@@ -1672,7 +1672,8 @@ const SPR={
 };
 const KINDS=['rose','rose','rose','rose','red','mari','jas'];
 let P=[],running=false,wind=0,NP=0;
-const DPR=Math.min(devicePixelRatio||1,2);function size(){cv.width=innerWidth*DPR;cv.height=Math.max(innerHeight,screen.height||0)*DPR;}
+const DPR=Math.min(devicePixelRatio||1,2);let VW=innerWidth,VH=innerHeight;
+function size(){VW=innerWidth;VH=innerHeight;cv.width=Math.round(VW*DPR);cv.height=Math.round(VH*DPR);cv.style.width=VW+'px';cv.style.height=VH+'px';}
 /* each petal owns a vertical lane, so the screen fills evenly from edge to edge */
 function mk(lane,y){
   const kind=KINDS[Math.floor(Math.random()*KINDS.length)];
@@ -1692,13 +1693,14 @@ function startPetals(){
   let last=performance.now();
   (function loop(now){
     now=now||performance.now(); const dt=Math.min(.05,(now-last)/1000); last=now; const f=dt*60;
-    cx.setTransform(DPR,0,0,DPR,0,0);cx.clearRect(0,0,innerWidth,innerHeight);
+    if(Math.abs(innerHeight-VH)>40) size();
+    cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,cv.width,cv.height);cx.setTransform(DPR,0,0,DPR,0,0);
     wind+=.002*f; const breeze=Math.sin(wind)*.08;          /* gentle breeze that sways both ways, never one-sided */
     for(const p of P){
       p.t+=f; p.y+=p.vy*dt; p.x0+=breeze*p.depth*f;
       const sw=Math.sin(p.t*p.freq*2+p.ph);
       p.x=p.x0+sw*p.amp;
-      if(p.y>innerHeight+30) Object.assign(p,mk(p.lane,-30-Math.random()*40));
+      if(p.y>VH+30) Object.assign(p,mk(p.lane,-30-Math.random()*40));
       cx.save();cx.translate(p.x,p.y);
       cx.rotate(p.base+sw*.6);
       cx.scale(.55+.45*Math.abs(Math.cos(p.t*p.freq+p.ph)),1);
